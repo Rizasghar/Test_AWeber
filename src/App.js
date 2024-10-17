@@ -3,42 +3,43 @@ import "./App.css";
 import { useState } from "react";
 
 function App() {
-  const [password, setPassword] = useState(null);
-  const [rePassword, setRePassword] = useState(null);
-  const [error, setError] = useState([]);
+  const [password, setPassword] = useState('');
+  const [rePassword, setRePassword] = useState('');
+  const [errors, setErrors] = useState([]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setError([]);
+    setErrors([]);
+    
     if (password !== rePassword) {
-      setError((error) => [...error, "Passwords do not match"]);
+      setErrors((error) => [...error, "Passwords do not match"]);
     } else {
       if (password.length < 6) {
-        setError((error) => [
+        setErrors((error) => [
           ...error,
           "Password should have a min length of 6 characters",
         ]);
       }
       if (password === password.toLowerCase()) {
-        setError((error) => [
+        setErrors((error) => [
           ...error,
           "Password should have at least 1 uppercase character",
         ]);
       }
       if (password === password.toUpperCase()) {
-        setError((error) => [
+        setErrors((error) => [
           ...error,
           "Password should have at least 1 lowercase character",
         ]);
       }
       if (password.match(/[0-9]/) === null) {
-        setError((error) => [
+        setErrors((error) => [
           ...error,
           "Password should have at least 1 numeric charachter",
         ]);
       }
       if (password.match(/\W/) === null) {
-        setError((error) => [
+        setErrors((error) => [
           ...error,
           "Password should have at least 1 special charachter",
         ]);
@@ -66,13 +67,12 @@ function App() {
         <br />
         <button type="submit">Submit</button>
       </form>
-      {error.length ? (
-        error.map((item) => (
-          <p key={item} style={{ color: "red" }}>
-            {item}
-          </p>
-        ))
-      ) : (
+      {errors?.map((item) => (
+        <p key={item} style={{ color: "red" }}>
+          {item}
+        </p>
+      ))}
+      {!errors.length && (
         <p style={{ color: "green" }}>Password is valid</p>
       )}
     </div>
